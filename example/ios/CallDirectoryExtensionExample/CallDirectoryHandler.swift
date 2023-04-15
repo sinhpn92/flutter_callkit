@@ -18,7 +18,7 @@ final class CallDirectoryHandler: CXCallDirectoryProvider {
 
     override func beginRequest(with context: CXCallDirectoryExtensionContext) {
         context.delegate = self
-
+        NSLog("--->>> CallDirectoryHandler:beginRequest")
         // Check whether this is an "incremental" data request. If so, only provide the set of phone number blocking
         // and identification entries which have been added or removed since the last time this extension's data was loaded.
         // But the extension must still be prepared to provide the full set of data at any time, so add all blocking
@@ -71,6 +71,7 @@ final class CallDirectoryHandler: CXCallDirectoryProvider {
         //
         // Numbers must be provided in numerically ascending order.
         identifiedNumbers.forEach {
+            context.removeIdentificationEntry(withPhoneNumber: $0.number)
             context.addIdentificationEntry(
                 withNextSequentialPhoneNumber: $0.number,
                 label: $0.label
@@ -87,9 +88,8 @@ final class CallDirectoryHandler: CXCallDirectoryProvider {
         identifiedNumbers
             .filter { $0.modificationDate > date }
             .forEach {
-                if $0.isRemoved {
-                    context.removeIdentificationEntry(withPhoneNumber: $0.number)
-                } else {
+                context.removeIdentificationEntry(withPhoneNumber: $0.number)
+                if !$0.isRemoved {
                     context.addIdentificationEntry(
                         withNextSequentialPhoneNumber: $0.number,
                         label: $0.label

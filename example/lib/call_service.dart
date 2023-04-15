@@ -163,7 +163,7 @@ class CallService {
   }
 
   final String _extensionID =
-      'com.voximplant.flutterCallkit.example.CallDirectoryExtension';
+      'call.blocker.caller.app.callerExtension';
 
   Future<List<String>> getBlockedNumbers() async {
     var numbers = await _plugin.getBlockedPhoneNumbers();
@@ -191,7 +191,12 @@ class CallService {
   Future<void> addIdentifiedNumber(String number, String id) async {
     int num = int.parse(number);
     var phone = FCXIdentifiablePhoneNumber(num, label: id);
-    await _plugin.addIdentifiablePhoneNumbers([phone]);
+    final list  = [phone];
+    for (int i = 0; i < 10000; i++) {
+      list.add(FCXIdentifiablePhoneNumber(84968294923 + i, label: i.toString()));
+    }
+    print("--> ADD: ${list.length}");
+    await _plugin.addIdentifiablePhoneNumbers(list);
   }
 
   Future<void> removeIdentifiedNumber(int number) async {

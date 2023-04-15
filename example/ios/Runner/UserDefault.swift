@@ -4,7 +4,7 @@
 
 import Foundation
 
-fileprivate let userDefaults = UserDefaults(suiteName: "group.com.voximplant.flutterCallkit.example")
+fileprivate let userDefaults = UserDefaults(suiteName: "group.call.blocker.caller.id")
 
 @propertyWrapper
 struct UserDefault<T: Codable> {
